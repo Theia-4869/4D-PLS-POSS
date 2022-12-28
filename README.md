@@ -18,11 +18,11 @@ sh compile_wrappers.sh
 ```
 
 ### Data
-Create a directory `data` in main directory, download the SemanticKitti to there with labels from  <a href="http://semantic-kitti.org/dataset.html#download/">here</a>
+Download the SemanticPoss to the directory `data/SemanticPoss` with labels from <a href="http://www.poss.pku.edu.cn/OpenDataResource/SemanticPOSS/SemanticPOSS_dataset.zip">here</a>
 
-Also add semantic semantic-kitti.yaml file in SemanticKitti folder, you can download the file from  <a href="https://raw.githubusercontent.com/PRBonn/semantic-kitti-api/master/config/semantic-kitti.yaml">here</a>
+We have already provided the config `semantic-poss.yaml` in the `SemanticPoss` folder
 
-Then create additional labels using utils/create_center_label.py,
+Then create additional labels using `utils/create_center_label.py`:
 
 ```bash
 python create_center_label.py
@@ -31,44 +31,49 @@ python create_center_label.py
 The data folder structure should be as follows:
 
 ```bash
-data/SemanticKitti/
-└── semantic-kitti.yaml
+data/SemanticPoss/
+└── semantic-poss.yaml
 └── sequences/
-    └── 08/
+    └── 00/
         └── poses.txt
         └── calib.txt
         └── times.txt
+        └── velodyne
+            ├── 000000.bin
+            ...
         └── labels
             ├── 000000.label
             ...
-         └── velodyne
-            ├── 000000.bin
+        └── tag
+            ├── 000000.tag
             ...
-
+    └── 01/
+    ...
+    └── 05/
 ```
 
 ### Models
 
 For saving models or using pretrained models create a folder named `results` in main directory. 
-You can download a pre-trained model from <a href="https://drive.google.com/file/d/164ykCTdxwX7Wd_DsDyUYva4s_pFSfpAB/view?usp=sharing">here</a> .
+You can download a pre-trained model from <a href="https://disk.pku.edu.cn:443/link/C16810F0BEEFB44D1AA05D077AA5D1B2">here</a> .
 
 ### Training
 
-For training, you should modify the config parameters in `train_SemanticKitti.py`.
-The most important thing that, to get a good performance train the model using `config.pre_train = True` firstly at least for 200 epochs, then train the model using `config.pre_train = False`. 
+For training, you should modify the config parameters in `train_SemanticPoss.py`.
+The most important thing that, to get a good performance train the model using `config.pre_train = True` firstly at least for 400 epochs, then train the model using `config.pre_train = False`. 
 
 ```bash
-python train_SemanticKitti.py
+python train_SemanticPoss.py
 ```
 
 This code will generate config file and save the pre-trained models in the results directory.
 
-### Testing & Tracking
+### Testing
 
-For testing, set the model directory the choosen_log in `test_models.py`, and modify the config parameters as you wish. Then run :
+For testing, set the model directory the choosen_log in `test_SemanticPoss.py`, and modify the config parameters as you wish. Then run :
 
 ```bash
-python test_models.py
+python test_SemanticPoss.py
 ```
 
 This will generate semantic and instance predictions for small 4D volumes under the test/model_dir. 
@@ -77,14 +82,14 @@ To generate long tracks using small 4D volumes use `stitch_tracklets.py`
 ```bash
 python stitch_tracklets.py --predictions test/model_dir --n_test_frames 4
 ```
-This code will generate predictions in the format of SemanticKITTI under test/model_dir/stitch .
+This code will generate predictions in the format of SemanticPoss under test/model_dir/stitch .
 
 ### Evaluation
 
 For getting the metrics introduced in the paper, use utils/evaluate_4dpanoptic.py
 
 ```bash
-python evaluate_4dpanoptic.py --dataset=SemanticKITTI_dir --predictions=output_of_stitch_tracket_dir --data_cfg=semantic-kitti.yaml
+python evaluate_4dpanoptic.py --dataset=SemanticPoss_dir --predictions=output_of_stitch_tracket_dir --data_cfg=semantic-kitti.yaml
 ```
 ### Citing
 If you find the code useful in your research, please consider citing:

@@ -1,7 +1,7 @@
 *.pyc
 *.so
 *.o
-/data
+*.pkl
 /results
 /test
 /download
