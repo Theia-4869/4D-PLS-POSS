@@ -84,7 +84,7 @@ def get_bbox_from_points(points):
     z1 = torch.min(points[:, 2])
     z2 = torch.max(points[:, 2])
 
-    return [x1,y1,z1,x2,y2,z2], np.array([x1 + (x2-x1)/2, y1+ (y2-y1)/2,z1+ (z2-z1)/2, 0, x2-x1,y2-y1,z2-z1]) # x, y, z, theta, l, w, h
+    return [x1,y1,z1,x2,y2,z2], np.array(torch.tensor([x1 + (x2-x1)/2, y1+ (y2-y1)/2,z1+ (z2-z1)/2, 0, x2-x1,y2-y1,z2-z1], device='cpu')) # x, y, z, theta, l, w, h
 
 def get_2d_bbox(points):
 
@@ -534,8 +534,11 @@ class KPFCNN(nn.Module):
 
         counter = 0
         ins_id = 1
+        flag = 0
         while True:
-            ins_idxs = torch.where((predicted < 9) & (predicted != 0) & (ins_prediction == 0))
+            if flag == 1000:
+                break
+            ins_idxs = torch.where((predicted < 4) & (predicted != 0) & (ins_prediction == 0))
             if len(ins_idxs[0]) == 0:
                 break
             ins_centers = centers_output[ins_idxs]
@@ -556,11 +559,13 @@ class KPFCNN(nn.Module):
                 counter +=1
                 if counter == sorted.shape[0]:
                     break
+                flag += 1
                 continue
             ids = ins_idxs[0][ins_points[0]]
             ins_prediction[ids] = ins_id
             counter = 0
             ins_id += 1
+            flag = 0
         return ins_prediction
 
     def ins_pred_in_time(self, config, predicted, centers_output, var_output, embedding, prev_instances, next_ins_id, points=None, times=None, pose=None):
@@ -594,7 +599,7 @@ class KPFCNN(nn.Module):
         ins_id = next_ins_id
 
         while True:
-            ins_idxs = torch.where((predicted < 9) & (predicted != 0) & (ins_prediction == 0))
+            ins_idxs = torch.where((predicted < 4) & (predicted != 0) & (ins_prediction == 0))
             if len(ins_idxs[0]) == 0:
                 break
             ins_centers = centers_output[ins_idxs]

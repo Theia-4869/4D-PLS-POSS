@@ -6,8 +6,8 @@ from os import listdir
 from os.path import exists, join, isdir
 import sys
 
-sequences = ['{:02d}'.format(i) for i in range(11)]
-path = '../data/SemanticKitti/'
+sequences = ['{:02d}'.format(i) for i in range(6)]
+path = '../data/SemanticPoss/'
 covariance = np.diag(np.array([1, 1, 1]))
 center_point = np.zeros((1, 3))
 
