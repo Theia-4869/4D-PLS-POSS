@@ -116,10 +116,10 @@ def associate_instances_overlapping_frames(previous_ins_label, current_ins_label
     return association_costs_matched,  associations
 
 def main(FLAGS):
-    data_cfg = 'data/SemanticKitti/semantic-kitti.yaml'
+    data_cfg = 'data/SemanticPoss/semantic-poss.yaml'
     DATA = yaml.safe_load(open(data_cfg, 'r'))
     split = 'valid'
-    dataset = 'data/SemanticKitti'
+    dataset = 'data/SemanticPoss'
 
     prediction_dir =  FLAGS.predictions
     if split == 'valid':
@@ -221,7 +221,7 @@ def main(FLAGS):
             new_points = np.sum(np.expand_dims(hpoints, 2) * pose.T, axis=1)
             points = new_points[:, :3]
 
-            things = (label_sem_class < 9) & (label_sem_class > 0)
+            things = (label_sem_class < 4) & (label_sem_class > 0)
             ins_ids = np.unique(label_inst * things)
 
             if os.path.exists(fet_path):
@@ -296,7 +296,7 @@ def main(FLAGS):
                                                   '{0:02d}_{1:07d}_i.npy'.format(sequence, idx - i))
                     prev_inst_orig = np.load(prev_inst_orig_path)
 
-                    things = (prev_sem < 9) & (prev_sem > 0)
+                    things = (prev_sem < 4) & (prev_sem > 0)
 
                     # associate instances from previous frame pred_n and current prediction which contain pred_n, pred_n+1
                     association_costs, associations = associate_instances_overlapping_frames(prev_inst_orig* things, prev_inst* things)
@@ -312,7 +312,7 @@ def main(FLAGS):
                             id1 = overlap_history[id1]
                         overlaps[id2] = id1
 
-                    prev_point_path = os.path.join(dataset, "sequences", '{0:02d}'.format(int(sequence)), "velodyne", '{0:06d}.bin'.format(idx-i))
+                    prev_point_path = os.path.join(dataset, "sequences", '{0:02d}'.format(int(sequence)), "velodyne", '{0:06d}.bin'.format(idx-i+1))
                     #pose = poses[0][idx-i]
                     frame_points = np.fromfile(prev_point_path, dtype=np.float32)
                     points = frame_points.reshape((-1, 4))
@@ -440,7 +440,7 @@ def main(FLAGS):
             inv_sem_labels = inv_learning_map[sem_pred]
             new_preds = np.bitwise_or(new_preds,inv_sem_labels)
 
-            new_preds.tofile('{}/{}/{:02d}/predictions/{:06d}.label'.format(save_path, 'sequences', sequence, idx))
+            new_preds.tofile('{}/{}/{:02d}/predictions/{:06d}.label'.format(save_path, 'sequences', sequence, idx+1))
             times.append(time.time()) #writing time
             #print ('load, overlap, assoc, update, write')
             #for i in range(1, len(times)):

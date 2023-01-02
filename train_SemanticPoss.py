@@ -229,7 +229,7 @@ if __name__ == '__main__':
     # Choose here if you want to start training from a previous snapshot (None for new training)
 
     # previous_training_path = ''
-    previous_training_path = 'pretrain_false_frame_4_epoch_300_bsz_16_lr_1e-3'
+    previous_training_path = 'pretrain'
     # Choose index of checkpoint to start from. If None, uses the latest chkp
     chkp_idx = None
     if previous_training_path:
@@ -264,8 +264,8 @@ if __name__ == '__main__':
         config.saving_path = None
     config.learning_rate = 1e-4 #after pretraining change to 1e-4 
     config.pre_train = False
-    config.max_epoch = 300
-    config.batch_num = 16
+    config.max_epoch = 400
+    # config.batch_num = 16
     config.free_dim = 4
     config.n_frames = 4
     config.reinit_var = False
