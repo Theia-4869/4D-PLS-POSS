@@ -488,7 +488,7 @@ if __name__ == '__main__':
         '--sequences', '-s',
         dest='sequences',
         type=str,
-        default='8'
+        default='2'
     )
 
     parser.add_argument(
