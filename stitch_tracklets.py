@@ -118,7 +118,7 @@ def associate_instances_overlapping_frames(previous_ins_label, current_ins_label
 def main(FLAGS):
     data_cfg = 'data/SemanticPoss/semantic-poss.yaml'
     DATA = yaml.safe_load(open(data_cfg, 'r'))
-    split = 'valid'
+    split = 'test'
     dataset = 'data/SemanticPoss'
 
     prediction_dir =  FLAGS.predictions
