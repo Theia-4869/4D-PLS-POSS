@@ -1,17 +1,18 @@
-# 4D Panoptic Lidar Segmentation
+# 4D Panoptic Lidar Segmentation for SemanticPOSS
 
 <img width="720" alt="4dmain" src="https://user-images.githubusercontent.com/5329637/124156220-077a2500-daa0-11eb-8d59-6dd5c1455500.png">
 
 <a href="https://mehmetaygun.github.io/4DPLS.html">Project Website with Demo Video</a>.
 
-This repo contains code for the paper 4D Panoptic Lidar Segmentation. 
+This repo contains code for 4D Panoptic Lidar Segmentation for SemanticPOSS.  
+This repo is modified from <a href="https://github.com/MehmetAygun/4D-PLS">4D-PLS</a>.  
 The code is based on the Pytoch implementation of  <a href="https://github.com/HuguesTHOMAS/KPConv-PyTorch">KPConv</a>.
 
 ### Installation
 
 ```bash
-git clone https://github.com/MehmetAygun/4D-PLS
-cd 4D-PLS
+git clone https://github.com/Theia-4869/4D-PLS-POSS.git
+cd 4D-PLS-POSS
 pip install -r requirements.txt
 cd cpp_wrappers
 sh compile_wrappers.sh
@@ -55,7 +56,7 @@ data/SemanticPoss/
 ### Models
 
 For saving models or using pretrained models create a folder named `results` in main directory. 
-You can download a pre-trained model from <a href="https://disk.pku.edu.cn:443/link/C16810F0BEEFB44D1AA05D077AA5D1B2">here</a> .
+You can download a pre-trained model from <a href="https://disk.pku.edu.cn:443/link/17C269A408255A4763387B15B1849394">here</a>.
 
 ### Training
 
@@ -89,7 +90,7 @@ This code will generate predictions in the format of SemanticPoss under test/mod
 For getting the metrics introduced in the paper, use utils/evaluate_4dpanoptic.py
 
 ```bash
-python evaluate_4dpanoptic.py --dataset=SemanticPoss_dir --predictions=output_of_stitch_tracket_dir --data_cfg=semantic-kitti.yaml
+python evaluate_4dpanoptic.py --dataset=SemanticPoss_dir --predictions=output_of_stitch_tracket_dir
 ```
 ### Citing
 If you find the code useful in your research, please consider citing:
